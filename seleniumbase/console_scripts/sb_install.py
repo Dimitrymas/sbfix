@@ -57,7 +57,7 @@ PLAT = sys.platform
 IS_WINDOWS = False
 if "win32" in PLAT or "win64" in PLAT or "x64" in PLAT or "x86" in PLAT:
     IS_WINDOWS = True
-DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+DRIVER_DIR = fr"{os.getcwd()}\files\chrome"
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (If can't find LATEST_STABLE)
 DEFAULT_GECKODRIVER_VERSION = "v0.33.0"
@@ -682,7 +682,6 @@ def main(override=None, intel_for_uc=None):
             raise Exception("headless_ie_selenium.exe missing from Zip file!")
         print("Extracting %s from %s ..." % (filename, headless_ie_file_name))
         zip_ref.extractall(downloads_folder)
-        print(downloads_folder)
         zip_ref.close()
         os.remove(zip_file_path)
         shutil.copyfile(driver_path, os.path.join(downloads_folder, filename))
@@ -705,6 +704,7 @@ def main(override=None, intel_for_uc=None):
             # Only works if the directory is empty
             os.rmdir(os.path.join(downloads_folder, h_ie_fn))
         driver_path = os.path.join(downloads_folder, filename)
+
         print(
             "The file [%s] was saved to:\n%s%s%s\n"
             % (filename, c3, driver_path, cr)
@@ -756,6 +756,7 @@ def main(override=None, intel_for_uc=None):
             if driver_contents:
                 contents = driver_contents
             print("Extracting %s from %s ..." % (contents, file_name))
+
             if intel_for_uc and IS_ARM_MAC:
                 f_name = "uc_driver"
                 new_file = os.path.join(downloads_folder, f_name)
@@ -781,6 +782,7 @@ def main(override=None, intel_for_uc=None):
                 if driver_contents:
                     contents = driver_contents
             else:
+
                 zip_ref.extractall(downloads_folder)
             zip_ref.close()
             os.remove(zip_file_path)
@@ -793,6 +795,7 @@ def main(override=None, intel_for_uc=None):
                         f_name = "uc_driver"
                 new_file = os.path.join(downloads_folder, str(f_name))
                 pr_file = c3 + new_file + cr
+                print(pr_file)
                 print("The file [%s] was saved to:\n%s\n" % (f_name, pr_file))
                 print("Making [%s %s] executable ..." % (f_name, use_version))
                 make_executable(new_file)
@@ -961,14 +964,12 @@ def main(override=None, intel_for_uc=None):
                         os.remove(new_file)  # Technically the old file now
             print("Extracting %s from %s ..." % (contents, file_name))
             tar.extractall(downloads_folder)
-            print(downloads_folder)
             tar.close()
             os.remove(tar_file_path)
             print("%sUnzip Complete!%s\n" % (c2, cr))
             for f_name in contents:
                 new_file = os.path.join(downloads_folder, str(f_name))
                 pr_file = c3 + new_file + cr
-
                 print("The file [%s] was saved to:\n%s\n" % (f_name, pr_file))
                 print("Making [%s %s] executable ..." % (f_name, use_version))
                 make_executable(new_file)

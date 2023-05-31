@@ -109,7 +109,7 @@ def Driver(
     uc_sub=None,  # Shortcut / Duplicate of "uc_subprocess".
     wire=None,  # Shortcut / Duplicate of "use_wire".
     pls=None,
-        version_main=113# Shortcut / Duplicate of "page_load_strategy".
+    version_main=113 # Shortcut / Duplicate of "page_load_strategy".
 ):
     from seleniumbase.fixtures import constants
 
@@ -393,6 +393,7 @@ def Driver(
 
     # Launch a web browser
     from seleniumbase.core import browser_launcher
+
     driver = browser_launcher.get_driver(
         browser_name=browser_name,
         headless=headless,

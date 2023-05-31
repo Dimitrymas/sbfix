@@ -30,7 +30,7 @@ if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
     selenium4_or_newer = True
     from selenium.webdriver.common.options import ArgOptions
 
-DRIVER_DIR = f"{os.getcwd()}/files/chrome"
+DRIVER_DIR = fr"{os.getcwd()}\files\chrome"
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
 # (Changes to the System PATH with os.environ only last during the test run)
 if not os.environ["PATH"].startswith(DRIVER_DIR):
@@ -98,7 +98,6 @@ else:
 
 def make_executable(file_path):
     # Set permissions to: "If you can read it, you can execute it."
-    return
     mode = os.stat(file_path).st_mode
     mode |= (mode & 0o444) >> 2  # copy R bits to X
     os.chmod(file_path, mode)
@@ -106,7 +105,6 @@ def make_executable(file_path):
 
 def make_driver_executable_if_not(driver_path):
     # Verify driver has executable permissions. If not, add them.
-    return
     permissions = oct(os.stat(driver_path)[0])[-3:]
     if "4" in permissions or "6" in permissions:
         # We want at least a '5' or '7' to make sure it's executable
@@ -133,6 +131,7 @@ def get_latest_chromedriver_version():
         return url_request.text
     else:
         return None
+
 
 def chromedriver_on_path():
     paths = os.environ["PATH"].split(os.pathsep)
@@ -228,7 +227,6 @@ def _repair_chromedriver(chrome_options, headless_options, mcv=None):
     subprocess.check_call(
         "sbase install chromedriver 72.0.3626.69", shell=True
     )
-    return
     try:
         if selenium4_or_newer:
             service = ChromeService(executable_path=LOCAL_CHROMEDRIVER)
@@ -975,6 +973,7 @@ def _set_firefox_options(
 
 
 def get_driver(
+    version_main,
     browser_name=None,
     headless=False,
     locale_code=None,
@@ -1026,7 +1025,7 @@ def get_driver(
     device_height=None,
     device_pixel_ratio=None,
     browser=None,
-    version_main=113
+     # A duplicate of browser_name to avoid confusion
 ):
     if not browser_name:
         if browser:
@@ -1057,18 +1056,7 @@ def get_driver(
                 "that includes the driver filename at the end of it!"
                 "\n(Will use default settings...)\n" % binary_location
             )
-            binary_location = None
-        else:
-            binary_name = binary_location.split("/")[-1].split("\\")[-1]
-            valid_names = get_valid_binary_names_for_browser(browser_name)
-            # if binary_name not in valid_names:
-            #     print(
-            #         "\nWarning: The Chromium binary specified is NOT valid!"
-            #         '\nExpecting "%s" to be found in %s for the browser / OS!'
-            #         "\n(Will use default settings...)\n"
-            #         "" % (binary_name, valid_names)
-            #     )
-            #     binary_location = None
+
     if (uc_cdp_events or uc_subprocess) and not undetectable:
         undetectable = True
     if is_using_uc(undetectable, browser_name) and mobile_emulator:
@@ -1178,112 +1166,112 @@ def get_driver(
         raise Exception(
             "Name length of Chrome's User Data Directory must be >= 3."
         )
-    # if use_grid:
-    #     return get_remote_driver(
-    #         browser_name,
-    #         headless,
-    #         locale_code,
-    #         protocol,
-    #         servername,
-    #         port,
-    #         proxy_string,
-    #         proxy_auth,
-    #         proxy_user,
-    #         proxy_pass,
-    #         proxy_bypass_list,
-    #         proxy_pac_url,
-    #         multi_proxy,
-    #         user_agent,
-    #         cap_file,
-    #         cap_string,
-    #         recorder_ext,
-    #         disable_js,
-    #         disable_csp,
-    #         enable_ws,
-    #         enable_sync,
-    #         use_auto_ext,
-    #         undetectable,
-    #         uc_cdp_events,
-    #         uc_subprocess,
-    #         no_sandbox,
-    #         disable_gpu,
-    #         headless2,
-    #         incognito,
-    #         guest_mode,
-    #         devtools,
-    #         remote_debug,
-    #         enable_3d_apis,
-    #         swiftshader,
-    #         ad_block_on,
-    #         block_images,
-    #         do_not_track,
-    #         chromium_arg,
-    #         firefox_arg,
-    #         firefox_pref,
-    #         user_data_dir,
-    #         extension_zip,
-    #         extension_dir,
-    #         binary_location,
-    #         page_load_strategy,
-    #         use_wire,
-    #         external_pdf,
-    #         test_id,
-    #         mobile_emulator,
-    #         device_width,
-    #         device_height,
-    #         device_pixel_ratio,
-    #     )
-    # else:
-    return get_local_driver(
-        browser_name,
-        headless,
-        locale_code,
-        servername,
-        proxy_string,
-        proxy_auth,
-        proxy_user,
-        proxy_pass,
-        proxy_bypass_list,
-        proxy_pac_url,
-        multi_proxy,
-        user_agent,
-        recorder_ext,
-        disable_js,
-        disable_csp,
-        enable_ws,
-        enable_sync,
-        use_auto_ext,
-        undetectable,
-        uc_cdp_events,
-        uc_subprocess,
-        no_sandbox,
-        disable_gpu,
-        headless2,
-        incognito,
-        guest_mode,
-        devtools,
-        remote_debug,
-        enable_3d_apis,
-        swiftshader,
-        ad_block_on,
-        block_images,
-        do_not_track,
-        chromium_arg,
-        firefox_arg,
-        firefox_pref,
-        user_data_dir,
-        extension_zip,
-        extension_dir,
-        binary_location,
-        page_load_strategy,
-        use_wire,
-        external_pdf,
-        mobile_emulator,
-        device_width,
-        device_height,
-        device_pixel_ratio,
-        version_main
-    )
+    if use_grid:
+        return get_remote_driver(
+            browser_name,
+            headless,
+            locale_code,
+            protocol,
+            servername,
+            port,
+            proxy_string,
+            proxy_auth,
+            proxy_user,
+            proxy_pass,
+            proxy_bypass_list,
+            proxy_pac_url,
+            multi_proxy,
+            user_agent,
+            cap_file,
+            cap_string,
+            recorder_ext,
+            disable_js,
+            disable_csp,
+            enable_ws,
+            enable_sync,
+            use_auto_ext,
+            undetectable,
+            uc_cdp_events,
+            uc_subprocess,
+            no_sandbox,
+            disable_gpu,
+            headless2,
+            incognito,
+            guest_mode,
+            devtools,
+            remote_debug,
+            enable_3d_apis,
+            swiftshader,
+            ad_block_on,
+            block_images,
+            do_not_track,
+            chromium_arg,
+            firefox_arg,
+            firefox_pref,
+            user_data_dir,
+            extension_zip,
+            extension_dir,
+            binary_location,
+            page_load_strategy,
+            use_wire,
+            external_pdf,
+            test_id,
+            mobile_emulator,
+            device_width,
+            device_height,
+            device_pixel_ratio,
+        )
+    else:
+        return get_local_driver(
+            browser_name,
+            headless,
+            locale_code,
+            servername,
+            proxy_string,
+            proxy_auth,
+            proxy_user,
+            proxy_pass,
+            proxy_bypass_list,
+            proxy_pac_url,
+            multi_proxy,
+            user_agent,
+            recorder_ext,
+            disable_js,
+            disable_csp,
+            enable_ws,
+            enable_sync,
+            use_auto_ext,
+            undetectable,
+            uc_cdp_events,
+            uc_subprocess,
+            no_sandbox,
+            disable_gpu,
+            headless2,
+            incognito,
+            guest_mode,
+            devtools,
+            remote_debug,
+            enable_3d_apis,
+            swiftshader,
+            ad_block_on,
+            block_images,
+            do_not_track,
+            chromium_arg,
+            firefox_arg,
+            firefox_pref,
+            user_data_dir,
+            extension_zip,
+            extension_dir,
+            binary_location,
+            page_load_strategy,
+            use_wire,
+            external_pdf,
+            mobile_emulator,
+            device_width,
+            device_height,
+            device_pixel_ratio,
+            version_main
+        )
 
 
 def get_remote_driver(
@@ -1887,7 +1875,7 @@ def get_local_driver(
     device_width,
     device_height,
     device_pixel_ratio,
-    version_main
+    version_main,
 ):
     """Spins up a new web browser and returns the driver.
     Can also be used to spin up additional browsers for the same test."""
@@ -2740,6 +2728,7 @@ def get_local_driver(
                     if binary_location:
                         try:
                             major_chrome_version = str(version_main)
+
                             if len(major_chrome_version) < 2:
                                 major_chrome_version = None
                         except Exception:
@@ -3327,11 +3316,9 @@ def get_local_driver(
                     )
                     if "--headless" in chrome_options.arguments:
                         chrome_options.arguments.remove("--headless")
-
                     return webdriver.Chrome(options=chrome_options)
         except Exception:
             try:
-
                 # Try again if Chrome didn't launch
                 return webdriver.Chrome(options=chrome_options)
             except Exception:
